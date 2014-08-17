@@ -48,7 +48,7 @@
             this.label_Step1.Location = new System.Drawing.Point(13, 13);
             this.label_Step1.Name = "label_Step1";
             this.label_Step1.Size = new System.Drawing.Size(186, 13);
-            this.label_Step1.TabIndex = 0;
+            this.label_Step1.TabIndex = 100000;
             this.label_Step1.Text = "Step 1: Please choice your license file";
             // 
             // button_Choice
@@ -56,7 +56,7 @@
             this.button_Choice.Location = new System.Drawing.Point(201, 8);
             this.button_Choice.Name = "button_Choice";
             this.button_Choice.Size = new System.Drawing.Size(263, 23);
-            this.button_Choice.TabIndex = 1;
+            this.button_Choice.TabIndex = 0;
             this.button_Choice.Text = "Choice";
             this.button_Choice.UseVisualStyleBackColor = true;
             this.button_Choice.Click += new System.EventHandler(this.button_Choice_Click);
@@ -67,7 +67,7 @@
             this.textBox_FilePath.Name = "textBox_FilePath";
             this.textBox_FilePath.ReadOnly = true;
             this.textBox_FilePath.Size = new System.Drawing.Size(448, 20);
-            this.textBox_FilePath.TabIndex = 2;
+            this.textBox_FilePath.TabIndex = 100000;
             // 
             // label_Step2
             // 
@@ -75,7 +75,7 @@
             this.label_Step2.Location = new System.Drawing.Point(13, 63);
             this.label_Step2.Name = "label_Step2";
             this.label_Step2.Size = new System.Drawing.Size(186, 13);
-            this.label_Step2.TabIndex = 4;
+            this.label_Step2.TabIndex = 100000;
             this.label_Step2.Text = "Step 2: Please select your source files";
             // 
             // button_ChoiceFiles
@@ -84,7 +84,7 @@
             this.button_ChoiceFiles.Location = new System.Drawing.Point(201, 57);
             this.button_ChoiceFiles.Name = "button_ChoiceFiles";
             this.button_ChoiceFiles.Size = new System.Drawing.Size(170, 23);
-            this.button_ChoiceFiles.TabIndex = 5;
+            this.button_ChoiceFiles.TabIndex = 1;
             this.button_ChoiceFiles.Text = "Select";
             this.button_ChoiceFiles.UseVisualStyleBackColor = true;
             this.button_ChoiceFiles.Click += new System.EventHandler(this.button_ChoiceFiles_Click);
@@ -97,7 +97,7 @@
             this.listBox_Files.Name = "listBox_Files";
             this.listBox_Files.ScrollAlwaysVisible = true;
             this.listBox_Files.Size = new System.Drawing.Size(448, 95);
-            this.listBox_Files.TabIndex = 6;
+            this.listBox_Files.TabIndex = 100000;
             // 
             // label_Step3
             // 
@@ -105,7 +105,7 @@
             this.label_Step3.Location = new System.Drawing.Point(13, 192);
             this.label_Step3.Name = "label_Step3";
             this.label_Step3.Size = new System.Drawing.Size(157, 13);
-            this.label_Step3.TabIndex = 7;
+            this.label_Step3.TabIndex = 100000;
             this.label_Step3.Text = "Step 3: Set encoding, and start!";
             // 
             // button_Start
@@ -114,7 +114,7 @@
             this.button_Start.Location = new System.Drawing.Point(377, 188);
             this.button_Start.Name = "button_Start";
             this.button_Start.Size = new System.Drawing.Size(87, 23);
-            this.button_Start.TabIndex = 8;
+            this.button_Start.TabIndex = 5;
             this.button_Start.Text = "Start";
             this.button_Start.UseVisualStyleBackColor = true;
             this.button_Start.Click += new System.EventHandler(this.button_Start_Click);
@@ -124,7 +124,7 @@
             this.progressBar.Location = new System.Drawing.Point(16, 226);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(448, 23);
-            this.progressBar.TabIndex = 9;
+            this.progressBar.TabIndex = 100000;
             // 
             // button_Clear
             // 
@@ -132,7 +132,7 @@
             this.button_Clear.Location = new System.Drawing.Point(377, 57);
             this.button_Clear.Name = "button_Clear";
             this.button_Clear.Size = new System.Drawing.Size(87, 23);
-            this.button_Clear.TabIndex = 10;
+            this.button_Clear.TabIndex = 2;
             this.button_Clear.Text = "Clear";
             this.button_Clear.UseVisualStyleBackColor = true;
             this.button_Clear.Click += new System.EventHandler(this.button_Clear_Click);
@@ -145,7 +145,7 @@
             this.comboBox_Encoding.Location = new System.Drawing.Point(200, 189);
             this.comboBox_Encoding.Name = "comboBox_Encoding";
             this.comboBox_Encoding.Size = new System.Drawing.Size(170, 21);
-            this.comboBox_Encoding.TabIndex = 11;
+            this.comboBox_Encoding.TabIndex = 4;
             // 
             // textBox_Log
             // 
@@ -156,7 +156,7 @@
             this.textBox_Log.ReadOnly = true;
             this.textBox_Log.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBox_Log.Size = new System.Drawing.Size(448, 107);
-            this.textBox_Log.TabIndex = 12;
+            this.textBox_Log.TabIndex = 6;
             // 
             // MainForm
             // 

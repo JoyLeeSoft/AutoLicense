@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using System.Threading;
 
 namespace AutoLicense
 {
@@ -28,6 +29,94 @@ namespace AutoLicense
         private void Log(string msg)
         {
             textBox_Log.AppendText(msg + "\r\n");
+        }
+
+        private void Core()
+        {
+            Invoke((MethodInvoker)delegate()
+            {
+                comboBox_Encoding.Enabled = button_Choice.Enabled = button_ChoiceFiles.Enabled = button_Clear.Enabled = 
+                button_Start.Enabled = false;
+
+                List<string> license = new List<string>();
+
+                try
+                {
+                    StreamReader license_reader = new StreamReader(textBox_FilePath.Text, true);
+
+                    while (license_reader.EndOfStream == false)
+                    {
+                        license.Add(license_reader.ReadLine());
+                    }
+                    license_reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Could not load license file\n" + ex.Message);
+                    return;
+                }
+
+                Encoding enco = ((Encoding)comboBox_Encoding.SelectedItem);
+
+                progressBar.Maximum = listBox_Files.Items.Count;
+                progressBar.Value = 0;
+
+                int successed = 0, failed = 0;
+                foreach (string path in listBox_Files.Items)
+                {
+                    string fullname = path.Substring(path.LastIndexOf('\\') + 1);
+                    //string name = fullname.Substring(0, fullname.LastIndexOf('.'));
+
+                    int idx = fullname.LastIndexOf('.');
+                    string ext = idx > 0 ? fullname.Substring(idx) : "";
+
+                    try
+                    {
+                        progressBar.Value++;
+                        Comment cmt;
+
+                        // For Makefile
+                        if (ext == "" && fullname == "makefile")
+                            cmt = new Comment("#", "");
+                        else
+                            cmt = CommentDic[ext];
+
+                        StreamReader reader = new StreamReader(path, enco);
+                        string temp = reader.ReadToEnd();
+                        reader.Close();
+
+                        StreamWriter writer = new StreamWriter(path, false, enco);
+                        foreach (string s in license)
+                        {
+                            writer.WriteLine(cmt.Begin + ' ' + s + ' ' + cmt.End);
+                        }
+                        writer.WriteLine();
+
+                        writer.Write(temp);
+                        writer.Close();
+
+                        successed++;
+                        Log("Wrote license into the source " + path);
+                    }
+                    catch (KeyNotFoundException)
+                    {
+                        Log("Could not write license into " + path + "\r\n" +
+                            "Extension \"" + ext + "\" is not supported yet");
+                        failed++;
+                    }
+                    catch (Exception ex)
+                    {
+                        Log("Could not write license into " + path + "\r\n" + ex.Message);
+                        failed++;
+                    }
+                }
+
+                Log(string.Format("Successed = {0}, Failed = {1}", successed, failed));
+                Log("=== AutoLicense has finished ===");
+
+                button_Choice.Enabled = button_ChoiceFiles.Enabled = button_Clear.Enabled = comboBox_Encoding.Enabled =
+                    button_Start.Enabled = true;
+            });
         }
 
         public MainForm()
@@ -59,6 +148,7 @@ namespace AutoLicense
             CommentDic.Add(".m", new Comment("//", ""));
             CommentDic.Add(".d", new Comment("//", ""));
             CommentDic.Add(".sql", new Comment("--", ""));
+            CommentDic.Add(".py", new Comment("#", ""));
         }
 
         private void button_Choice_Click(object sender, EventArgs e)
@@ -105,80 +195,8 @@ namespace AutoLicense
 
         private void button_Start_Click(object sender, EventArgs e)
         {
-            List<string> license = new List<string>();
-
-            try
-            {
-                StreamReader license_reader = new StreamReader(textBox_FilePath.Text, true);
-
-                while (license_reader.EndOfStream == false)
-                {
-                    license.Add(license_reader.ReadLine());
-                }
-                license_reader.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Could not load license file\n" + ex.Message);
-                return;
-            }
-
-            Encoding enco = ((Encoding)comboBox_Encoding.SelectedItem);
-
-            progressBar.Maximum = listBox_Files.Items.Count;
-            progressBar.Value = 0;
-
-            int successed = 0, failed = 0;
-            foreach (string path in listBox_Files.Items)
-            {
-                string fullname = path.Substring(path.LastIndexOf('\\') + 1);
-                //string name = fullname.Substring(0, fullname.LastIndexOf('.'));
-
-                int idx = fullname.LastIndexOf('.');
-                string ext = idx > 0 ? fullname.Substring(idx) : "";
-
-                try
-                {
-                    progressBar.Value++;
-                    Comment cmt;
-
-                    // For Makefile
-                    if (ext == "" && fullname == "makefile")
-                        cmt = new Comment("#", "");
-                    else 
-                        cmt = CommentDic[ext];
-
-                    StreamReader reader = new StreamReader(path, enco);
-                    string temp = reader.ReadToEnd();
-                    reader.Close();
-
-                    StreamWriter writer = new StreamWriter(path, false, enco);
-                    foreach (string s in license)
-                    {
-                        writer.WriteLine(cmt.Begin + ' ' + s + ' ' + cmt.End);
-                    }
-                    writer.WriteLine();
-
-                    writer.Write(temp);
-                    writer.Close();
-
-                    successed++;
-                    Log("Wrote license into the source " + path);
-                }
-                catch (KeyNotFoundException)
-                {
-                    Log("Could not write license into " + path + "\r\n" + 
-                        "Extension \"" + ext + "\" is not supported yet");
-                    failed++;
-                }
-                catch (Exception ex)
-                {
-                    Log("Could not write license into " + path + "\r\n" + ex.Message);
-                    failed++;
-                }
-            }
-
-            Log(string.Format("Successed = {0}, Failed = {1}", successed, failed));
+            Thread t = new Thread(new ThreadStart(Core));
+            t.Start();
         }
     }
 }
